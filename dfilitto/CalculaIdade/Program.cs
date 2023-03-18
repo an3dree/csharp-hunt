@@ -10,9 +10,8 @@
             pessoa1.Nome = Console.ReadLine();
             Console.WriteLine("Digite seu ano de nascimento");
             pessoa1.AnoNascimento = int.Parse(Console.ReadLine());
-            pessoa1.CalculaIdade(pessoa1.AnoNascimento);
-            Console.WriteLine("Nome: " + pessoa1.Nome);
-            Console.WriteLine("Idade: " + pessoa1.GetIdade());
+            pessoa1.EdibirDados();
+
             // var data = DateTime.Now;
             // int anoAtual = data.Year;
             // Console.WriteLine(anoAtual);

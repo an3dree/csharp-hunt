@@ -7,31 +7,46 @@ namespace CalculaIdade
         private string nome;
         public string Nome
         {
-            get { return nome; }
-            set { nome = value; }
+            get { return this.nome; }
+            set { this.nome = value; }
         }
 
         private int anoNascimento;
         public int AnoNascimento
         {
-            get { return anoNascimento; }
-            set { anoNascimento = value; }
+            get { return this.anoNascimento; }
+            set { this.anoNascimento = value; }
         }
 
-        private int idade;
-
-        public int GetIdade()
+        public void EdibirDados()
         {
-            return this.idade;
+            Console.WriteLine("Nome: " + this.Nome);
+            Console.WriteLine("Idade: " + CalcularIdade());
+            Console.WriteLine("Ano de Nascimento: " + this.AnoNascimento);
         }
 
-        public int CalculaIdade(int anoNascimento)
+        private int CalcularIdade()
         {
-            var date = DateTime.Now;
-            int ano = date.Year;
-            this.idade = ano - this.anoNascimento;
-            return this.idade;
+            DateTime date = DateTime.Now;
+            int anoAtual = date.Year;
+            int idade = anoAtual - this.AnoNascimento;
+            return idade;
         }
+
+        // private int idade;
+
+        // public int GetIdade()
+        // {
+        //     return this.idade;
+        // }
+
+        // public int CalculaIdade(int anoNascimento)
+        // {
+        //     var date = DateTime.Now;
+        //     int ano = date.Year;
+        //     this.idade = ano - this.anoNascimento;
+        //     return this.idade;
+        // }
 
 
     }
