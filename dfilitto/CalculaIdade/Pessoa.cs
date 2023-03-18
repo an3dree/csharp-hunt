@@ -18,19 +18,29 @@ namespace CalculaIdade
             set { this.anoNascimento = value; }
         }
 
+        private int idade;
+        public int Idade
+        {
+            get
+            {
+                CalcularIdade();
+                return this.idade;
+            }
+        }
+
+
         public void EdibirDados()
         {
             Console.WriteLine("Nome: " + this.Nome);
-            Console.WriteLine("Idade: " + CalcularIdade());
+            Console.WriteLine("Idade: " + this.Idade);
             Console.WriteLine("Ano de Nascimento: " + this.AnoNascimento);
         }
 
-        private int CalcularIdade()
+        private void CalcularIdade()
         {
             DateTime date = DateTime.Now;
             int anoAtual = date.Year;
-            int idade = anoAtual - this.AnoNascimento;
-            return idade;
+            this.idade = anoAtual - this.AnoNascimento;
         }
 
         // private int idade;
