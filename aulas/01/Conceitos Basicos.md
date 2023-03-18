@@ -211,6 +211,9 @@ Exemplo:
 
 ```c#
 int idade;
+double salario;
+string nome;
+bool estaLigado;
 ```
 <code>int idade;</code>
 
@@ -228,8 +231,8 @@ nomeVariavel = valor;
 Exemplos:
 
 ```c#
-idade = 50;
-nome = "André Luiz";
+int idade = 50;
+string nome = "André Luiz";
 ```
 
 <br>
