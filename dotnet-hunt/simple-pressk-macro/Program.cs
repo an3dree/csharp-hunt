@@ -9,7 +9,7 @@ class Program
         bool running = true;
         while (running)
         {
-            Timer timer = new Timer(PressKey, null, 30000, Timeout.Infinite);
+            Timer timer = new Timer(PressKey, null, 120000, Timeout.Infinite);
             Console.WriteLine("Esperando 30 segundos");
             ConsoleKeyInfo keyInfo = Console.ReadKey();
             if (keyInfo.Key == ConsoleKey.Q)
