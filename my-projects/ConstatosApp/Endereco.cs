@@ -1,10 +1,10 @@
 public class Endereco
 {
-        string Rua {get; set;}
-        string Bairro {get; set;}
-        int Numero {get; set;}
-        string Cidade {get; set;}
-        string Estado {get; set;}
+        public string Rua {get; set;}
+        public string Bairro {get; set;}
+        public int Numero {get; set;}
+        public string Cidade {get; set;}
+        public string Estado {get; set;}
 
         public Endereco(){}
 

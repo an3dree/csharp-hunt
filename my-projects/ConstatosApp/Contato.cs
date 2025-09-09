@@ -1,12 +1,13 @@
 
 public class Contato
 {
+	public int Id {get; set;}
         public string FirstName {get; set;}
-        string LastName {get; set;}
-        string FullName {get; set;}
-        string Phone {get; set;}
-        string Email {get; set;}
-        Endereco Endereco {get; set;}
+        public string LastName {get; set;}
+	public string FullName {get; set;}
+        public string Phone {get; set;}
+        public string Email {get; set;}
+        public Endereco Endereco {get; set;}
 
         public Contato(){}
 
