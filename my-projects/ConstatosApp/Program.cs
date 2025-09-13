@@ -1,6 +1,21 @@
 ﻿// See https://aka.ms/new-console-template for more information
+using System.Text.Json;
+
 
 List<Contato> contatos = new List<Contato>();
+
+string dataFilePath = "./workspace/csharp-hunt/my-projects/ConstatosApp/data.json";
+
+if (File.Exists(dataFilePath))
+{
+	string fileContent = File.ReadAllText(dataFilePath);
+	List<Contato> loadedContacts = JsonSerializer.Deserialize<List<Contato>>(fileContent);
+	foreach(Contato contato in loadedContacts)
+	{
+		contatos.Add(contato);
+	}
+
+}
 
 int userOption = 0;
 do 
@@ -15,6 +30,7 @@ do
 			AddContact();
 			break;
 		case 2:
+			GetAllContacts();
 			break;
 		case 3:
 			break;
@@ -23,11 +39,14 @@ do
 		case 5:
 			break;
 	}
+
+
 } while (userOption != 5);
 
-//andre.FirstName = "André";
-//Console.WriteLine(andre.FirstName);
- 
+Console.WriteLine("Obrigado por usar andrev agenda"); 
+
+var data = JsonSerializer.Serialize(contatos);
+File.WriteAllText(data, dataFilePath);
 
 
 void ShowMenu()
@@ -47,6 +66,7 @@ void ShowMenu()
 
 void AddContact()
 {
+  Consoe.Write;
 	Console.WriteLine("Certo, vamos adicionar um novo contato!");
 	Console.WriteLine("Primeiro me fala, qual o nome do contato?");
 	var fName = Console.ReadLine();
@@ -81,5 +101,16 @@ void AddContact()
 	contato.Endereco.Numero = streetNumber;
 
 	contatos.Add(contato);
+	Console.WriteLine($"Contato {contato.FullName} foi adicionado com sucesso");
 
+}
+
+
+void GetAllContacts()
+{
+	Console.WriteLine("Contatos:");
+	foreach(Contato contato in contatos)
+	{
+		Console.WriteLine($"{contato.Id}\t{contato.FullName}\t{contato.Email}");
+	}
 }
