@@ -3,28 +3,24 @@ namespace ConstatosApp;
 public class Contato
 {
     public int Id { get; set; }
-    public string FirstName { get; set; }
-    public string LastName { get; set; }
-    public string FullName { get; set; }
+    public string Name { get; set; }
     public string Phone { get; set; }
     public string Email { get; set; }
     public Endereco Endereco { get; set; }
 
     public Contato() { }
 
-    public Contato(string fName, string lName, string phone, string email, Endereco endereco)
+    public Contato(int id, string name, string email, string phone, Endereco endereco)
     {
-        FirstName = fName;
-        LastName = lName;
-        FullName = $"{fName} {lName}";
+        Name = name;
         Phone = phone;
         Email = email;
         Endereco = endereco;
     }
 
-    public bool FirstNamIsValid()
+    public bool IsValid()
     {
-        return !string.IsNullOrEmpty(FirstName);
+        return !string.IsNullOrEmpty(Name);
     }
 
     public bool EmailIsValid()

@@ -9,30 +9,18 @@ namespace ConstatosApp
         static void Main(string[] args)
         {
 
-            List<Contato> contatos = new List<Contato>();
-            //          Console.WriteLine(Environment.CurrentDirectory);
-            //            Console.WriteLine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData));
-            //            Console.WriteLine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData));
-            //          Console.WriteLine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData));
-            //        var separator = System.IO.Path.PathSeparator;
-            //string dataFilePath = "./workspace/csharp-hunt/my-projects/ContatosProject/ConstatosApp/data.json";
+            //            List<Contato> contatos = new List<Contato>();
             string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
             string appDataDir = "andrevContatos";
             string dataFilePath = Path.Combine(appDataPath, appDataDir, "data.json");
-            //Console.WriteLine(dataFilePath);
             Directory.CreateDirectory(Path.Combine(appDataPath, appDataDir));
-            //Console.WriteLine(Path.Combine(appDataPath, appDataDir));
-
-
+            Service service = new Service();
 
             if (File.Exists(dataFilePath))
             {
                 string fileContent = File.ReadAllText(dataFilePath);
                 List<Contato> loadedContacts = JsonSerializer.Deserialize<List<Contato>>(fileContent);
-                foreach (Contato contato in loadedContacts)
-                {
-                    contatos.Add(contato);
-                }
+                service.LoadContacts(loadedContacts);
 
             }
 
@@ -63,7 +51,7 @@ namespace ConstatosApp
 
             } while (userOption != 5);
 
-
+            List<Contato> contatos = service.GetContacts();
             var data = JsonSerializer.Serialize(contatos);
             File.WriteAllText(dataFilePath, data);
 
@@ -90,51 +78,27 @@ namespace ConstatosApp
                 Console.WriteLine("Vamos buscar um contato");
                 Console.WriteLine("Por favor, digite o nome, o email ou o id do contato");
                 var userInput = Console.ReadLine();
-                var result = contatos.Single(c => c.FirstName == userInput);
-                Console.Write($"{result.Id}\t{result.FullName}\t {result.Email}");
+                var result = service.GetContato(userInput);
+                Console.Write($"{result.Id}\t{result.Name}\t {result.Email}");
             }
 
             void AddContact()
             {
 
                 Console.WriteLine("Certo, vamos adicionar um novo contato!");
-                Contato contato = new Contato();
+                //                Contato contato = new Contato();
                 Endereco endereco = new Endereco();
-                int id = contatos.Count + 1;
+                int id = service.GetContacts().Count + 1;
                 endereco.Id = id;
-                contato.Id = id;
 
                 Console.WriteLine("Primeiro me fala, qual o nome do contato?");
                 var fName = Console.ReadLine();
-                contato.FirstName = fName;
-                do
-                {
-                    Console.WriteLine("Nome invalid, tent novamente");
-                    var _fName = Console.ReadLine();
-                    contato.FirstName = _fName;
-
-                } while (!contato.FirstNamIsValid());
-
 
                 Console.WriteLine("E o sobrenome?");
-                var lName = Console.ReadLine();
-                contato.LastName = lName;
-
-                contato.FullName = $"${contato.FirstName} {contato.LastName}";
-
                 Console.WriteLine("Qual o email do contato?");
                 var email = Console.ReadLine();
-                contato.Email = email;
-                do
-                {
-                    Console.WriteLine("invalid email, try again");
-                    var _email = Console.ReadLine();
-                    contato.Email = _email;
-                } while (!contato.EmailIsValid());
-
                 Console.WriteLine("Qual o telefone do contato?");
                 var phone = Console.ReadLine();
-                contato.Phone = phone;
 
                 Console.WriteLine("Qual a cidade?");
                 var city = Console.ReadLine();
@@ -154,19 +118,22 @@ namespace ConstatosApp
                 int streetNumber = int.Parse(Console.ReadLine());
                 endereco.Numero = streetNumber;
 
-                contato.Endereco = endereco;
-                contatos.Add(contato);
-                Console.WriteLine($"Contato {contato.FullName} foi adicionado com sucesso");
 
+
+                if (service.AddContact(id, fName, email, phone, endereco))
+                    Console.WriteLine($"Contato foi adicionado com sucesso");
+                else
+                    Console.WriteLine("Nome ou Email invalido");
             }
 
 
             void GetAllContacts()
             {
                 Console.WriteLine("Contatos:");
-                foreach (Contato contato in contatos)
+                List<Contato> _contatos = service.GetContacts();
+                foreach (Contato contato in _contatos)
                 {
-                    Console.WriteLine($"{contato.Id}\t{contato.FullName}\t{contato.Email}");
+                    Console.WriteLine($"{contato.Id}\t{contato.Name}\t{contato.Email}");
                 }
             }
 
