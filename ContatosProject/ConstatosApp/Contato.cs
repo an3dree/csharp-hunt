@@ -20,7 +20,7 @@ public class Contato
 
     public bool IsValid()
     {
-        return !string.IsNullOrEmpty(Name);
+        return !string.IsNullOrWhiteSpace(Name);
     }
 
     public bool EmailIsValid()
