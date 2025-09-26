@@ -43,13 +43,17 @@ namespace ConstatosApp
                         GetContact();
                         break;
                     case 4:
+                        EditContact();
                         break;
                     case 5:
+                        RemoveContact();
+                        break;
+                    case 6:
                         break;
                 }
 
 
-            } while (userOption != 5);
+            } while (userOption != 6);
 
             List<Contato> contatos = service.GetContacts();
             var data = JsonSerializer.Serialize(contatos);
@@ -67,16 +71,18 @@ namespace ConstatosApp
                 Console.WriteLine("1 - Adicionar novo contato");
                 Console.WriteLine("2 - Listar contatos");
                 Console.WriteLine("3 - Buscar contato");
-                Console.WriteLine("4 - Remover contato");
-                Console.WriteLine("5 - Sair do programa");
+                Console.WriteLine("4 - Editar contato");
+                Console.WriteLine("5 - Remover contato");
+                Console.WriteLine("6 - Sair do programa");
                 Console.WriteLine();
                 Console.WriteLine("*************************************");
             }
 
             void GetContact()
             {
+                Console.WriteLine();
                 Console.WriteLine("Vamos buscar um contato");
-                Console.WriteLine("Por favor, digite o nome, o email ou o id do contato");
+                Console.WriteLine("Por favor, digite o nome ou o id do contato");
                 var userInput = Console.ReadLine();
                 var result = service.GetContato(userInput);
                 Console.Write($"{result.Id}\t{result.Name}\t {result.Email}");
@@ -84,6 +90,9 @@ namespace ConstatosApp
 
             void AddContact()
             {
+                Console.WriteLine();
+                Console.WriteLine();
+                Console.WriteLine("___________________________________________________");
 
                 Console.WriteLine("Certo, vamos adicionar um novo contato!");
                 //                Contato contato = new Contato();
@@ -115,26 +124,126 @@ namespace ConstatosApp
                 var streetName = Console.ReadLine();
                 endereco.Rua = streetName;
                 Console.WriteLine("Qual o número a residência?");
-                int streetNumber = int.Parse(Console.ReadLine());
+                string streetNumber = Console.ReadLine();
                 endereco.Numero = streetNumber;
 
+                Contato contato = new Contato
+                {
+                    Id = id,
+                    Name = fName,
+                    Email = email,
+                    Phone = phone,
+                    Endereco = endereco,
+                };
 
-
-                if (service.AddContact(id, fName, email, phone, endereco))
+                if (service.AddContact((contato)))
                     Console.WriteLine($"Contato foi adicionado com sucesso");
                 else
                     Console.WriteLine("Nome ou Email invalido");
+
+                Console.WriteLine("___________________________________________________");
+                Console.WriteLine();
+
             }
 
 
             void GetAllContacts()
             {
+                Console.WriteLine();
+                Console.WriteLine();
+                Console.WriteLine("___________________________________________________");
+
                 Console.WriteLine("Contatos:");
                 List<Contato> _contatos = service.GetContacts();
                 foreach (Contato contato in _contatos)
                 {
                     Console.WriteLine($"{contato.Id}\t{contato.Name}\t{contato.Email}");
                 }
+                Console.WriteLine("___________________________________________________");
+                Console.WriteLine();
+            }
+
+            void RemoveContact()
+            {
+                Console.WriteLine();
+                Console.WriteLine();
+                Console.WriteLine("___________________________________________________");
+                Console.WriteLine("Qual o id do contato que você deseja remover?");
+                int id = int.Parse(Console.ReadLine());
+                Contato contato = service.GetContato(id);
+                service.RemoveContact(contato);
+                Console.WriteLine("___________________________________________________");
+                Console.WriteLine();
+
+            }
+
+            void EditContact()
+            {
+                Console.WriteLine();
+                Console.WriteLine();
+                Console.WriteLine("___________________________________________________");
+                Console.WriteLine("Qual o id do contato que você deseja editar?");
+                int id = int.Parse(Console.ReadLine());
+                Contato contatoToEdit = service.GetContato(id);
+                Console.WriteLine("Informe o novo nome");
+                string nName = Console.ReadLine();
+                Console.WriteLine("Informe o novo email");
+                string nEmail = Console.ReadLine();
+                Console.WriteLine("Informe o novo telefone");
+                string nPhone = Console.ReadLine();
+
+                contatoToEdit.Name = nName;
+                contatoToEdit.Email = nEmail;
+                contatoToEdit.Phone = nPhone;
+
+                Console.WriteLine("Deseja alterar o endereço?");
+                Console.WriteLine("1 - Sim");
+                Console.WriteLine("2 - Não");
+                string userChoice = Console.ReadLine();
+
+
+
+                if (userChoice == "1")
+                {
+                    Console.WriteLine("Digite a cidade");
+                    string city = Console.ReadLine();
+                    Console.WriteLine("Digite o nome da rua");
+                    string streetNumber = Console.ReadLine();
+                    Console.WriteLine("Digite o bairro");
+                    string province = Console.ReadLine();
+                    Console.WriteLine("Digite o Estado");
+                    string uf = Console.ReadLine();
+                    Console.WriteLine("Digite o Numero da residencia");
+                    string number = Console.ReadLine();
+
+                    Endereco endereco = new Endereco
+                    {
+                        Cidade = city,
+                        Rua = streetNumber,
+                        Bairro = province,
+                        Estado = uf,
+                        Numero = number
+                    };
+                    //                 contatoToEdit.Endereco = endereco;
+                    if (service.EditContact(contatoToEdit, nName, nEmail, nPhone, true, endereco))
+                        Console.WriteLine("Contato editado");
+                    else
+                        Console.WriteLine("Erro editando contato");
+
+                }
+                else
+                {
+                    if (service.EditContact(contatoToEdit, nName, nEmail, nPhone, false, null))
+                        Console.WriteLine("Contato editado");
+                    else
+                    {
+                        Console.WriteLine("Erro editando contato");
+                    }
+                }
+                Console.WriteLine();
+                Console.WriteLine();
+                Console.WriteLine("___________________________________________________");
+
             }
 
         }

@@ -40,11 +40,12 @@ public class ContatoTests
 
     }
     [Fact]
-    public void IsValid_WhiteSpaces_MustReturnFalse()
+    public void IsValid_NameWhiteSpaces_MustReturnFalse()
     {
         var contato = new Contato
         {
             Name = "  ",
+            Email = "mark@out.com",
         };
 
         var result = contato.IsValid();
@@ -52,5 +53,34 @@ public class ContatoTests
         Assert.False(result);
     }
 
+    [Fact]
+    public void IsValid_EmailWithOutAt_MustReturnFalse()
+    {
+        var contato = new Contato
+        {
+            Name = "Alot Test",
+            Email = "teste.com.br",
+        };
+
+        var result = contato.IsValid();
+
+        Assert.False(result);
+
+    }
+
+    [Fact]
+    public void IsValid_EmailWithAt_MustReturnTrue()
+    {
+        var contato = new Contato
+        {
+            Name = "Hello Jack",
+            Email = "jeck@hello"
+        };
+
+        var result = contato.IsValid();
+
+        Assert.True(result);
+    }
+// TODO new tests
 
 }

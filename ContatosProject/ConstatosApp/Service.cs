@@ -19,6 +19,11 @@ public class Service
         return _contatos.FirstOrDefault(c => c.Name == name);
     }
 
+    public Contato GetContato(int id)
+    {
+        return _contatos.FirstOrDefault(c => c.Id == id);
+    }
+
     public void LoadContacts(List<Contato> contatos)
     {
         foreach (Contato contato in contatos)
@@ -27,21 +32,24 @@ public class Service
         }
     }
 
-    public bool AddContact(int id, string name, string email, string phone, Endereco endereco)
+    public bool AddContact(Contato contato)
     {
-        Contato contato = new Contato()
-        {
-            Id = id,
-            Name = name,
-            Email = email,
-            Phone = phone,
-            Endereco = endereco,
-        };
 
-        if (contato.IsValid() && contato.EmailIsValid())
+
+        if (contato.IsValid())
         {
-            _contatos.Add(contato);
-            return true;
+            var contactWithSameEmail = _contatos.FirstOrDefault(c => c.Email == contato.Email);
+
+            if (contactWithSameEmail != null)
+            {
+                Console.WriteLine("Email alredy in use");
+                return false;
+            }
+            else
+            {
+                _contatos.Add(contato);
+                return true;
+            }
         }
         else
         {
@@ -50,5 +58,35 @@ public class Service
         //        return false;
     }
 
+    public bool RemoveContact(Contato contato)
+    {
+        if (_contatos.Remove(contato))
+            return true;
+        else
+            return false;
+    }
+
+    public bool EditContact(
+        Contato contato,
+        string name,
+        string email,
+        string phone,
+        bool editEndero,
+        Endereco endereco
+        )
+    {
+        Contato contatoToEdit = _contatos.FirstOrDefault(c => c.Id == contato.Id);
+        contatoToEdit.Name = name;
+        contatoToEdit.Email = email;
+        contatoToEdit.Phone = phone;
+        if (editEndero)
+            contatoToEdit.Endereco = endereco;
+
+        if (contatoToEdit.IsValid())
+            return true;
+        else
+            return false;
+
+    }
 
 }

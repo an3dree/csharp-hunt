@@ -20,13 +20,9 @@ public class Contato
 
     public bool IsValid()
     {
-        return !string.IsNullOrWhiteSpace(Name);
+        return !string.IsNullOrWhiteSpace(Name) && Email.Contains("@");
     }
 
-    public bool EmailIsValid()
-    {
-        return Email.Contains("@");
-    }
 }
 
 
